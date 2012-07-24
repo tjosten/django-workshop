@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from workshop.settings import MEDIA_ROOT
 
 
 # Uncomment the next two lines to enable the admin:
@@ -18,6 +19,9 @@ urlpatterns = patterns('',
 
     # Workshop Blog URL Config
     url(r'^blog/', include('blog.urls')),
+
+    # Media serving for dev server
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT, 'show_indexes': True }),
 )
 
 # Automatically serve static files in development setup

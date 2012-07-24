@@ -8,6 +8,11 @@
     {% for entry in entries %}
         <div class="span6">
             <h2><a href="{% url blog-entry entry.url_slug %}">{{ entry.title }}</a></h2>
+            {% if entry.image %}
+            <div class="keyvisual">
+                <img src="{{entry.image.url}}" alt="Keyvisual" />
+            </div>
+            {% endif %}
             <p>{{ entry.text|safe }}</p>
             <p><em>von {{ entry.author.first_name }} {{ entry.author.last_name }} am {{ entry.pub_date }} Uhr</em></p>
         </div>

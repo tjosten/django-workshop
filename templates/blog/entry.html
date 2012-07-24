@@ -36,6 +36,11 @@
         <div class="span7">
         	<h1>{{entry.title}}</h1>
             <p><em>von {{ entry.author.first_name }} {{ entry.author.last_name }} am {{ entry.pub_date }} Uhr</em></p>
+            {% if entry.image %}
+            <div class="keyvisual">
+                <img src="{{entry.image.url}}" alt="Keyvisual" />
+            </div>
+            {% endif %}
             <div class="entry">{{ entry.text|safe }}</div>
         </div>
         <div class="span5">

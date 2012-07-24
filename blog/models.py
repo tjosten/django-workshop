@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 # datetime
 # Python datetime
 from datetime import datetime
+# workshop.settings
+# import our settings
+from workshop.settings import MEDIA_ROOT
 
 class Entry(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False, help_text="Titel des Blog-Eintrags")
@@ -16,6 +19,7 @@ class Entry(models.Model):
     pub_date = models.DateTimeField(default=datetime.now(), help_text="Datum und Uhrzeit")
     author = models.ForeignKey(User, null=False, blank=False, help_text="Autor")
     url_slug = models.SlugField(max_length=255, null=False, blank=False, unique=True, help_text="URL-Slug für diesen Eintrag")
+    image = models.ImageField(upload_to="keyvisuals/", help_text="Keyvisual-Bild für diesen Artikel")
 
     def __unicode__(self):
         return "%s (von %s)" % (self.title, self.author)
