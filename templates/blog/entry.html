@@ -1,0 +1,76 @@
+{% extends "base/base.html" %}
+
+{% block headline %}{% endblock %}
+{% block subheadline %}{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        blockquote p {
+            font-size: 14px !important;
+            line-height: 1.3em;
+        }
+        blockquote small {
+            font-size: 12px !important;
+        }
+        div.entry {
+            line-height: 1.5em;
+        }
+        span.helptext {
+            display: none;
+        }
+
+        form input {
+            width: 350px;
+        }
+
+        form textarea {
+            width: 350px;
+        }
+
+        ul.errorlist {
+            color: red;
+        }
+    </style>
+
+    <div class="row">
+        <div class="span7">
+        	<h1>{{entry.title}}</h1>
+            <p><em>von {{ entry.author.first_name }} {{ entry.author.last_name }} am {{ entry.pub_date }} Uhr</em></p>
+            <div class="entry">{{ entry.text|safe }}</div>
+        </div>
+        <div class="span5">
+        	<h2 style="margin-bottom:20px;">Kommentare</h2>
+            {% for comment in comments %}
+                <blockquote style="margin-bottom:10px;">
+                    <p>{{comment.text}}</p>
+                    <small>{{comment.author_name}}, vor {{comment.pub_date|timesince}}</small>
+                </blockquote>
+                <hr />
+            {% empty %}
+                <p>Bisher wurden keine Kommentare verfasst.</p>
+            {% endfor %}
+            {% if comments %}
+                <div class="pagination">
+                    <ul>
+                        {% if comments.has_previous %}
+                            <li><a href="{% url blog-entry entry.url_slug comments.previous_page_number %}">Vorherige</a></li>
+                        {% endif %}
+                        {% for page in paginator.page_range %}
+                        <li {% if page == comments.number %}class="active"{% endif %}><a href="{% url blog-entry entry.url_slug page %}">{{ page }}</a></li>
+                        {% endfor %}
+                        {% if comments.has_next %}
+                            <li><a href="{% url blog-entry entry.url_slug comments.next_page_number %}">Nächste</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+            <hr />
+            <h3>Kommentar abgeben</h3>
+            <form method="POST" action="" style="margin-top:10px;">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" class="btn" value="Absenden" />
+            </form>
+        </div>
+    </div>
+{% endblock %}

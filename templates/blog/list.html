@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+
+{% block headline %}Blog{% endblock %}
+{% block subheadline %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+    {% for entry in entries %}
+        <div class="span6">
+            <h2><a href="{% url blog-entry entry.url_slug %}">{{ entry.title }}</a></h2>
+            <p>{{ entry.text|safe }}</p>
+            <p><em>von {{ entry.author.first_name }} {{ entry.author.last_name }} am {{ entry.pub_date }} Uhr</em></p>
+        </div>
+    {% empty %}
+        <div class="span6">
+            <div class="alert alert-error">
+                Sorry, bisher gibt es keine Einträge in diesem Blog!
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    
+    {% if entries %}
+        <div class="pagination">
+            <ul>
+                {% if entries.has_previous %}
+                    <li><a href="{% url blog-home entries.previous_page_number %}">Vorherige</a></li>
+                {% endif %}
+                {% for page in paginator.page_range %}
+                <li {% if page == entries.number %}class="active"{% endif %}><a href="{% url blog-home page %}">{{ page }}</a></li>
+                {% endfor %}
+                {% if entries.has_next %}
+                    <li><a href="{% url blog-home entries.next_page_number %}">Nächste</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+    
+{% endblock %}
