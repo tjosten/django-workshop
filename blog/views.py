@@ -53,20 +53,6 @@ def entry_view(request, url_slug, page_num=None):
     # We're trying to fetch the single entry now by the url_slug given
     entry = get_object_or_404(Entry, url_slug=url_slug)
 
-    # Fetching the raw comments for this entry
-    comments_raw = Comment.objects.filter(entry=entry).order_by('-pub_date')
-
-    # Initializing the paginator
-    paginator = Paginator(comments_raw, COMMENTS_PER_PAGE)
-
-    # Determining current page
-    try:
-        comments = paginator.page(page_num)
-    except PageNotAnInteger:
-        comments = paginator.page(1)
-    except EmptyPage:
-        comments = paginator.page(paginator.num_pages)
-
 
     """
         WORKSHOP NOTE
@@ -88,6 +74,20 @@ def entry_view(request, url_slug, page_num=None):
             form = CommentForm()
     else:
         form = CommentForm()
+
+    # Fetching the raw comments for this entry
+    comments_raw = Comment.objects.filter(entry=entry).order_by('-pub_date')
+
+    # Initializing the paginator
+    paginator = Paginator(comments_raw, COMMENTS_PER_PAGE)
+
+    # Determining current page
+    try:
+        comments = paginator.page(page_num)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
 
     return render_to_response("blog/entry.html", locals(), context_instance=RequestContext(request))
 
