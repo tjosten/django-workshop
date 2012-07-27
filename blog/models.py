@@ -32,7 +32,7 @@ class Comment(models.Model):
     entry = models.ForeignKey(Entry, null=False, blank=False)
     author_name = models.CharField(max_length=100, null=False, blank=False, help_text="Name des Autors", verbose_name="Name")
     author_email = models.EmailField(null=False, blank=False, help_text="E-Mail Adresse des Autors", verbose_name="E-Mail Adresse")
-    pub_date = models.DateTimeField(default=datetime.now(), help_text="Datum und Uhrzeit")
+    pub_date = models.DateTimeField(auto_now_add=True, help_text="Datum und Uhrzeit")
     text = models.TextField(null=False, blank=False, max_length=500, help_text="Der Kommentar", verbose_name="Kommentar")
 
     def __unicode__(self):
